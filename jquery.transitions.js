@@ -3,11 +3,11 @@
 // 1.1
 // 
 // Feature detects CSS transitions and provides a means to manage
-// transitions that start or end with unaimatable properties solely
-// using class definitions in CSS. Adds two methods to jQuery:
+// transitions that start or end with un-transitionable properties
+// using CSS classes. Adds two methods to jQuery:
 // 
-// .addTransitionClass( className )
-// .removeTransitionClass( className )
+// .addTransitionClass( className, callback )
+// .removeTransitionClass( className, callback )
 // 
 // These fall back to jQuery's standard .addClass() and .removeClass()
 // when the browser does not support CSS transitions, so they are safe
