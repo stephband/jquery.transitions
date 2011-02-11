@@ -1,6 +1,6 @@
 // jquery.transitions.js
 // 
-// 1.0
+// 1.1
 // 
 // Feature detects CSS transitions and provides a means to manage
 // transitions that start or end with unaimatable properties solely
@@ -29,36 +29,40 @@
       timer;
   
   function end(e){
-    e.data
+    e.data.obj
     .unbind( jQuery.support.cssTransitionEnd, end )
     .removeClass( transitionClass );
+    
+    e.data.callback && e.data.callback();
   }
   
-  // jQuery plugin methods
+  // jQuery plugins
   
-  function addTransitionClass( classNames ) {
+  function addTransitionClass( classNames, fn ) {
     // Add the transition class then force the
-    // browser to reflow.
+    // browser to reflow by measuring something.
     this
     .addClass( transitionClass )
     .width();
     
     this
-    .bind( jQuery.support.cssTransitionEnd, this, end )
+    .unbind(jQuery.support.cssTransitionEnd, end)
+    .bind(jQuery.support.cssTransitionEnd, { obj: this, callback: fn }, end)
     .addClass( classNames );
     
     return this;
   }
   
-  function removeTransitionClass( classNames ) {
+  function removeTransitionClass( classNames, fn ) {
     // Add the transition class then force the
-    // browser to reflow.
+    // browser to reflow by measuring something.
     this
     .addClass( transitionClass )
     .width();
     
     this
-    .bind( jQuery.support.cssTransitionEnd, this, end )
+    .unbind(jQuery.support.cssTransitionEnd, end)
+    .bind(jQuery.support.cssTransitionEnd, { obj: this, callback: fn }, end)
     .removeClass( classNames );
     
     return this;
@@ -88,9 +92,16 @@
     docElem.unbind('transitionend webkitTransitionEnd oTransitionEnd', transitionEnd);
   }
   
-  // Use the non-transition plugins by default
-  jQuery.fn.addTransitionClass = jQuery.fn.addClass;
-  jQuery.fn.removeTransitionClass = jQuery.fn.removeClass;
+  // Use addClass() and removeClass() methods by default
+  jQuery.fn.addTransitionClass = function( classNames, fn ){
+    this.addClass( classNames );
+    fn && fn();
+  };
+  
+  jQuery.fn.removeTransitionClass = function( classNames, fn ){
+    this.removeClass( classNames );
+    fn && fn();
+  };
   
   docElem
   .bind('transitionend webkitTransitionEnd oTransitionEnd', transitionEnd)
