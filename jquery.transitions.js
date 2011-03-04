@@ -1,6 +1,6 @@
 // jquery.transitions.js
 // 
-// 1.1
+// 1.2
 // 
 // Feature detects CSS transitions and provides a means to manage
 // transitions that start or end with un-transitionable properties
@@ -96,11 +96,13 @@
   jQuery.fn.addTransitionClass = function( classNames, fn ){
     this.addClass( classNames );
     fn && fn();
+    return this;
   };
   
   jQuery.fn.removeTransitionClass = function( classNames, fn ){
     this.removeClass( classNames );
     fn && fn();
+    return this;
   };
   
   docElem
