@@ -1,6 +1,6 @@
 // jquery.transitions.js
 // 
-// 1.2
+// 1.3
 // 
 // Feature detects CSS transitions and provides a means to manage
 // transitions that start or end with un-transitionable properties
@@ -104,6 +104,12 @@
     fn && fn();
     return this;
   };
+  
+  // Run the feature detection test and store values in
+  // jQuery.support.css
+  if (!jQuery.support.css) {
+    jQuery.support.css = {};
+  }
   
   docElem
   .bind('transitionend webkitTransitionEnd oTransitionEnd', transitionEnd)
