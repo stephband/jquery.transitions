@@ -40,10 +40,10 @@
       opacity: 0;
       display: none;
       
-      -webkit-transition: opacity 0.15s ease-in;
-         -moz-transition: opacity 0.15s ease-in;
-           -o-transition: opacity 0.15s ease-in;
-              transition: opacity 0.15s ease-in;
+      -webkit-transition: opacity 0.2s ease-in;
+         -moz-transition: opacity 0.2s ease-in;
+           -o-transition: opacity 0.2s ease-in;
+              transition: opacity 0.2s ease-in;
     }
     
     .test.active {
@@ -78,11 +78,55 @@
       .bind('click', function(){
         if (state) {
           state = false;
-          test.addTransitionClass('active');
+          test.addTransitionClass('active', {
+            callback: function() {
+              console.log('Finished add');
+            },
+            fallback: function(callback) {
+              console.log('Fallback add');
+              this
+              .css({
+                opacity: 0,
+                display: 'block'
+              })
+              .animate({
+                opacity: 1
+              }, {
+                duration: 200,
+              	complete: callback
+              });
+            }
+          });
         }
         else {
           state = true;
-          test.removeTransitionClass('active');
+          test.removeTransitionClass('active', {
+            callback: function() {
+              console.log('Finished remove');
+            },
+            fallback: function(callback) {
+              var obj = this;
+              
+              console.log('Fallback remove');
+              
+              this
+              .css({
+                opacity: 1,
+                display: 'block'
+              })
+              .animate({
+                opacity: 0
+              }, {
+                duration: 200,
+                complete: function(){
+                  obj.css({
+                    display: 'none'
+                  });
+                  callback();
+                }
+              });
+            }
+          });
         }
       });
     });

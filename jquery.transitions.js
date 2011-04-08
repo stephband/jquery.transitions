@@ -29,16 +29,18 @@
 			timer;
 	
 	function end(e){
+		var callback = e.data.callback;
+		
 		e.data.obj
 		.unbind( jQuery.support.cssTransitionEnd, end )
 		.removeClass( transitionClass );
 		
-		e.data.callback && e.data.callback();
+		callback && callback.call(e.data.obj);
 	}
 	
 	// jQuery plugins
 	
-	function addTransitionClass( classNames, fn ) {
+	function addTransitionClass( classNames, options ) {
 		// Add the transition class then force the
 		// browser to reflow by measuring something.
 		this
@@ -47,13 +49,13 @@
 		
 		this
 		.unbind(jQuery.support.cssTransitionEnd, end)
-		.bind(jQuery.support.cssTransitionEnd, { obj: this, callback: fn }, end)
+		.bind(jQuery.support.cssTransitionEnd, { obj: this, callback: options && options.callback }, end)
 		.addClass( classNames );
 		
 		return this;
 	}
 	
-	function removeTransitionClass( classNames, fn ) {
+	function removeTransitionClass( classNames, options ) {
 		// Add the transition class then force the
 		// browser to reflow by measuring something.
 		this
@@ -62,7 +64,7 @@
 		
 		this
 		.unbind(jQuery.support.cssTransitionEnd, end)
-		.bind(jQuery.support.cssTransitionEnd, { obj: this, callback: fn }, end)
+		.bind(jQuery.support.cssTransitionEnd, { obj: this, callback: options && options.callback }, end)
 		.removeClass( classNames );
 		
 		return this;
@@ -93,34 +95,26 @@
 	}
 	
 	// Use addClass() and removeClass() methods by default
-	jQuery.fn.addTransitionClass = function( classNames, options ){
-		var fallback = options.fallback,
-				callback = options.callback;
+	jQuery.fn.addTransitionClass = function(classNames, options) {
+		var fallback = options && options.fallback,
+				callback = options && options.callback;
 		
-		if (fallback) {
-			fallback.call(this, callback);
-			this.addClass(classNames);
-		}
-		else {
-			this.addClass(classNames);
-			callback && callback.call(this);
-		}
+		this.addClass(classNames);
+		
+		if (fallback) { fallback.call(this, callback); }
+		else					{ callback && callback.call(this); }
 		
 		return this;
 	};
 	
-	jQuery.fn.removeTransitionClass = function( classNames, fn ){
-		var fallback = options.fallback,
-				callback = options.callback;
+	jQuery.fn.removeTransitionClass = function( classNames, options ){
+		var fallback = options && options.fallback,
+				callback = options && options.callback;
 		
-		if (fallback) {
-			fallback.call(this, callback);
-			this.removeClass(classNames);
-		}
-		else {
-			this.removeClass(classNames);
-			callback && callback.call(this);
-		}
+		this.removeClass(classNames);
+		
+		if (fallback) { fallback.call(this, callback); }
+		else 					{ callback && callback.call(this); }
 		
 		return this;
 	};
