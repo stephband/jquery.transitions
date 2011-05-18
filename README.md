@@ -5,7 +5,7 @@ These two methods address these problems.</p>
 <h2>New in 1.5 - IE fallback!</h2>
 <p>Automatic fallback to jQuery's .animate() in IE6, IE7 and IE8, allowing you to write transitions in CSS and have them display in these browsers, too. Support is rudimentary for the moment, but works if you stick to a few rules.</p>
 <ul>
-<li>CSS must be written: <code>transition: width 0.4s ease-in [, property duration easing];</code>. Transition sub-properties not supported.</li>
+<li>CSS must be written: <code>transition: width 0.4s ease-in [, property duration easing];</code>. Transition sub-properties not supported. Yet.</li>
 <li>Supports any number of property definitions, but animates them all at the last defined duration (avoids launching multiple calls to .animate()).</li>
 <li>Supports animations on the current element only. That is, children that have transitions defined will not be animated. (Finding them could potentially be expensive).</li>
 </ul>
@@ -49,6 +49,9 @@ The class 'transition' is not added, and the callback is called immediately afte
 <pre><code>jQuery('.jim').removeTransitionClass('active')</code></pre>
 <p>...he fades out again, and then is removed from display.</p>
 <p>Note that if you try doing this simply by adding and removing the class <code>active</code>, you get some surprising results. When you add <code>active</code>, Jim appears at full opacity, without any transition. The browser does not judge a transition applicable because it has just rendered Jim for the first time, with <code>display: block; opacity: 1</code>. Jim disappears just as quickly when you remove the class <code>active</code>, because he suddenly no longer has <code>display: block</code>. The <code>transition</code> class, along with .addTransitionClass() and .removeTransitionClass(), solve these problems.</p>
+
+<h2>Reading</h2>
+<p>Original blog post: <a href="http://stephband.info/using-jquery-to-manage-css-transitions">http://stephband.info/using-jquery-to-manage-css-transitions</a></p>
 
 <h2>Help</h2>
 <p>Help improve me. Fork and help out!</p>
