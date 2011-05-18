@@ -35,7 +35,11 @@ The class 'transition' is not added, and the callback is called immediately afte
 .jim.transition {
   display: block;
 }</code></pre>
-<p><code>.jim</code> is hidden until <code>jQuery('.jim').addTransitionClass('active')</code>, at which point he becomes a block and fades in to <code>opacity: 1</code>. On <code>jQuery('.jim').removeTransitionClass('active')</code>, he fades out again, and then is removed from display.</p>
+<p><code>.jim</code> is hidden until:</p>
+<pre><code>jQuery('.jim').addTransitionClass('active')</code></pre>
+<p>...at which point he becomes a block and fades in to <code>opacity: 1</code>. On:</p>
+<pre><code>jQuery('.jim').removeTransitionClass('active')</code></pre>
+<p>...he fades out again, and then is removed from display.</p>
 <p>Note that if you try doing this simply by adding and removing the class <code>active</code>, you get some surprising results. When you add <code>active</code>, Jim appears at full opacity, without any transition. The browser does not judge a transition applicable because it has just rendered <code>.jim</code> for the first time, with <code>display: block; opacity: 1</code>. <code>.jim</code> disappears just as quickly when you remove the class <code>active</code>, because he suddenly no longer has <code>display: block</code>.</p>
 <p>The <code>transition</code> class, along with .addTransitionClass() and .removeTransitionClass(), solve these problems.</p>
 
