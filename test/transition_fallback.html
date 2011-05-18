@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" class="no_js">
+<head>
+	<meta charset="utf-8" />
+	<meta name="author" content="">
+	<meta name="description" content="">
+	
+	<title>template - jquery.transitions fallback test</title>
+	
+	<script>document.documentElement.className='';</script>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	<!-- Force latest IE rendering engine & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- Make IE recognise HTML5 elements for styling - must stay in the head, before elements are used -->
+	<!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!-- Disable image toolbar in IE6 -->
+	<!--[if lte IE 6]><meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+
+	<style>
+		body {
+		  padding: 0 2em;
+		}
+		
+		section {
+			padding: 1em 0 2em 0;
+			position: relative;
+		}
+		
+		.expand {
+		  background-color: orange;
+		  height: 20px;
+		  
+		  -webkit-transition: height 0.3s ease-in;
+		     -moz-transition: height 0.3s ease-in;
+		          transition: height 0.3s ease-in;
+		}
+		
+		.expand.active {
+			height: 150px;
+		}
+		
+		.childtrans {
+		  background-color: orange;
+		  height: 20px;
+		}
+		
+		.childtrans .child {
+			width: 80%;
+			margin: 0 auto;
+			
+			height: 20px;
+			background-color: red;
+			
+		  -webkit-transition: height 0.3s ease-in;
+		     -moz-transition: height 0.3s ease-in;
+		          transition: height 0.3s ease-in;
+		}
+		
+		.childtrans.active .child {
+			height: 150px;
+		}
+		
+		.notrans {
+		  background-color: orange;
+		  height: 20px;
+		}
+		
+		.notrans.active {
+			height: 150px;
+		}
+	</style>
+</head>
+
+<body>
+	<h2>Transition</h2>
+	<section class="test">
+		<div class="expand"></div>
+	</section>
+	
+	<h2>Child transition</h2>
+	<section class="test">
+		<div class="childtrans">
+			<div class="child">
+			</div>
+		</div>
+	</section>
+	
+	<h2>No transition</h2>
+	
+	<section class="test">
+		<div class="notrans"></div>
+	</section>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="../jquery.js"%3E%3C/script%3E'));</script>
+	<script src="../jquery.transitions.js"></script>
+	<script>
+		jQuery(document).ready(function(){
+			jQuery('.expand, .notrans, .childtrans').bind('click', function() {
+				var debug = window.console && console.log;
+				
+				var elem = jQuery(this),
+						flag = elem.data('flag');
+				
+				if (!flag) {
+					if (debug) { console.log('ADD'); }
+					jQuery(this).addTransitionClass('active');
+				}
+				else {
+					if (debug) { console.log('REMOVE'); }
+					jQuery(this).removeTransitionClass('active');
+				}
+				
+				elem.data('flag', !flag);
+			});
+		});
+	</script>
+</body>
+</html>
