@@ -1,6 +1,6 @@
 // jquery.transitions.js
 // 
-// 1.5
+// 1.6
 // 
 // Feature detects CSS transitions and provides a means to manage
 // transitions that start or end with un-transitionable properties
@@ -14,11 +14,14 @@
 // to use without forking your code.
 
 (function(jQuery, undefined){
-	var debug = window.console && console.log,
+	var debug = (window.console && console.log),
 			docElem = jQuery(document),
 			testElem = jQuery('<div/>').css({
-				position: 'absolute',
+				// position: 'absolute' makes IE8 jump into Compatibility
+				// Mode. Use position: 'relative'.
+				position: 'relative',
 				top: -200,
+				left: -9999,
 				width: 100,
 				height: 100,
 				WebkitTransition: 'top 0.001s linear',
@@ -37,43 +40,53 @@
 		
 		return function(className, callback) {
 			var elem = this,
-			  	transition, css, key, options;
+			  	transition, css, key, options, style;
 			
 			if (elem.hasClass(className) === add) {
-				// No need to continue. Element already has got, or has not
-				// got this class.
+				// No need to continue. Element already has got (or has not
+				// got) this class.
 				return;
 			}
 			
 			doClass.call(elem, className).addClass(transitionClass);
 			
-			transition = this.css('transition') || this.css('-webkit-transition') || this.css('-moz-transition');
+			transition = (
+				// For IE6, IE7, IE8
+				this.css('transition') ||
+				// For IE9
+				(window.getComputedStyle && getComputedStyle(this[0], null).transition)
+			);
 			
 			if (transition) {
 				// IE, even though it doesn't support CSS transitions, at least
 				// sees the rules, so we can interpret them and animate accordingly.
 				
 				css = {};
+				style = elem.attr('style');
 				options = {
+					queue: true,
+					specialEasing: {},
 					complete: function() {
 						var key;
 						
-						for (key in css) { css[key] = ''; }
-						
-						// Add the class and remove inline styles that have been
-						// animated. In an ideal world, the style will remain the
-						// same because we have just animated to it :)
-				  	elem.removeClass(transitionClass).css(css);
+						// Remove the transition class and reset the style attribute
+						// to it's pre-animated state. In an ideal world, the elem will
+						// remain the same because we have just animated to it.
+				  	
+				  	elem.removeClass(transitionClass);
+				  	
+				  	if (style) { elem.attr('style', style); }
+				  	else { elem.removeAttr('style'); }
 						
 						callback && callback.apply(this);
-					},
-					queue: true
+					}
 				};
 				
+				// Regex should be looser, to allow incompolete transition definitions...
 				transition.replace(/([a-z\-]+)\s+([^\s]+)\s+([a-z\-]+)/g, function($match, $key, $duration, $easing) {
 					css[$key] = elem.css($key);
 					options.duration = parseFloat($duration) * 1000; // Convert seconds to milliseconds
-					//options.easing = $easing;
+					options.specialEasing[$key] = $easing;
 				});
 				
 				undoClass.call(elem, className);
@@ -91,11 +104,11 @@
 				doClass.call(elem, className);
 			}
 			else {
-				if (debug) { console.log('Cannot use transition definition'); }
+				if (debug) { console.log('[jquery.transitions] Transition definition not readable'); }
 				callback && callback.apply(this);
 			}
-		}
-	};
+		};
+	}
 	
 	function end(e){
 		var callback = e.data.callback;
@@ -148,6 +161,8 @@
 	}
 	
 	function transitionEnd(e){
+		if (debug) { console.log('[jquery.transitions] CSS transition support detected.'); }
+		
 		// Get rid of the test element
 		removeTest();
 		
@@ -164,6 +179,32 @@
 	}
 	
 	
+	// Easing functions 'borrowed' from jQuery UI, renamed to meet
+	// the CSS spec. TODO: At some point, we should rewrite these
+	// to exactly match ths CSS spec:
+	//
+	// ease: cubic-bezier(0,0,1,1)
+	// ease-in: cubic-bezier(0.25,0.1,0.25,1)
+	// ease-out: cubic-bezier(0,0,0.58,1)
+	// ease-in-out: cubic-bezier(0.42,0,0.58,1)
+	
+	jQuery.extend(jQuery.easing, {
+		'ease': function (x, t, b, c, d) {
+			if ((t/=d/2) < 1) { return c/2*t*t + b };
+			return -c/2 * ((--t)*(t-2) - 1) + b;
+    },
+		'ease-in': function (x, t, b, c, d) {
+			return c*(t/=d)*t*t + b;
+    },
+		'ease-out': function (x, t, b, c, d) {
+			return c*((t=t/d-1)*t*t + 1) + b;
+		},
+		'ease-in-out': function (x, t, b, c, d) {
+			if ((t/=d/2) < 1) { return c/2*t*t*t + b };
+			return c/2*((t-=2)*t*t + 2) + b;
+		}
+	});
+	
 	// Use addClass() and removeClass() methods by default
 	
 	jQuery.fn.addTransitionClass = function(classNames, o) {
@@ -173,7 +214,7 @@
 		return this;
 	};
 	
-	jQuery.fn.removeTransitionClass = function( classNames, o ){
+	jQuery.fn.removeTransitionClass = function(classNames, o){
 		var options = jQuery.extend({}, o, removeOptions);
 		
 		options.fallback.call(this, classNames, options.callback);
@@ -184,7 +225,7 @@
 	.bind('transitionend webkitTransitionEnd oTransitionEnd', transitionEnd)
 	.ready(function(){
 		// Put the test element in the body
-		document.body.appendChild(testElem[0]);
+		testElem.appendTo('body');
 		
 		// Force the browser to reflow.
 		testElem.width();

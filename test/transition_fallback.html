@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="no_js">
+<html lang="en">
 <head>
 	<meta charset="utf-8" />
 	<meta name="author" content="">
@@ -7,7 +7,7 @@
 	
 	<title>template - jquery.transitions fallback test</title>
 	
-	<script>document.documentElement.className='';</script>
+	<script>document.documentElement.className='js';</script>
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 	<!-- Force latest IE rendering engine & Chrome Frame -->
@@ -16,7 +16,9 @@
 	<!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 	<!-- Disable image toolbar in IE6 -->
 	<!--[if lte IE 6]><meta http-equiv="imagetoolbar" content="no" /><![endif]-->
-
+	
+	<link href="test.css" media="all" rel="stylesheet" type="text/css"/>
+	
 	<style>
 		body {
 		  padding: 0 2em;
@@ -30,14 +32,18 @@
 		.expand {
 		  background-color: orange;
 		  height: 20px;
+		  opacity: 0.4;
+		  filter: alpha(opacity=40);
 		  
-		  -webkit-transition: height 0.3s ease-in;
-		     -moz-transition: height 0.3s ease-in;
-		          transition: height 0.3s ease-in;
+		  -webkit-transition: height 0.3s ease-in-out, opacity 0.3s linear;
+		     -moz-transition: height 0.3s ease-in-out, opacity 0.3s linear;
+		          transition: height 0.3s ease-in-out, opacity 0.3s linear;
 		}
 		
 		.expand.active {
 			height: 150px;
+			opacity: 1;
+			filter: alpha(opacity=100);
 		}
 		
 		.childtrans {
@@ -95,11 +101,11 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
 	<script>!window.jQuery && document.write(unescape('%3Cscript src="../jquery.js"%3E%3C/script%3E'));</script>
 	<script src="../jquery.transitions.js"></script>
-	<script>
+	<script type="text/javascript">
 		jQuery(document).ready(function(){
 			jQuery('.expand, .notrans, .childtrans').bind('click', function() {
-				var debug = window.console && console.log;
-				
+				var debug = (window.console && console.log);
+  		
 				var elem = jQuery(this),
 						flag = elem.data('flag');
 				
