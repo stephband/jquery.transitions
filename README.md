@@ -30,6 +30,8 @@ The class 'transition' is not added, and the callback is called immediately afte
 <pre><code>.jim {
   display: none;
   opacity: 0;
+  /* For IE */
+  filter: alpha(opacity=0);
   
   -webkit-transition: opacity 0.06s ease-in;
      -moz-transition: opacity 0.06s ease-in;
@@ -39,6 +41,8 @@ The class 'transition' is not added, and the callback is called immediately afte
 .jim.active {
   display: block;
   opacity: 1;
+  /* For IE */
+  filter: alpha(opacity=100);
 }
 
 .jim.transition {
