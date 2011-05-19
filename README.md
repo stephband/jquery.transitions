@@ -22,7 +22,7 @@ The class 'transition' is not added, and the callback is called immediately afte
 <h2>Options</h2>
 <dl>
 	<dt>callback</dt><dd><i>function()</i> Called at the end of the CSS transition, or if CSS transition support is not detected, directly after className has been applied. Where fallback is defined, callback is passed to fallback as the first argument.<dd>
-	<dt>fallback</dt><dd><i>function(class, callback)</i> Fallback is only called when native CSS transition support is not detected, typically allowing you to define jQuery animations to replace the missing CSS transitions. Overrides the default fallback which currently implements an automatic animation fallback in IE6, IE7 and IE8.<dd>
+	<dt>fallback</dt><dd><i>function(class, callback)</i> Overrides the default fallback, which provides automatic animation for transitions on this element in IE6, IE7, IE8 and IE9. The fallback is only called when native CSS transition support is not detected, typically allowing you to define jQuery animations to replace the missing CSS transitions.<dd>
 </dl>
 
 <h2>An example</h2>
