@@ -17,8 +17,6 @@
 	<!-- Disable image toolbar in IE6 -->
 	<!--[if lte IE 6]><meta http-equiv="imagetoolbar" content="no" /><![endif]-->
 	
-	<link href="test.css" media="all" rel="stylesheet" type="text/css"/>
-	
 	<style>
 		body {
 		  padding: 0 2em;
@@ -29,6 +27,10 @@
 			position: relative;
 		}
 		
+		.no2_test {
+		  
+		}
+		
 		.expand {
 		  background-color: orange;
 		  height: 20px;
@@ -37,6 +39,7 @@
 		  
 		  -webkit-transition: height 0.3s ease-in-out, opacity 0.3s linear;
 		     -moz-transition: height 0.3s ease-in-out, opacity 0.3s linear;
+		       -o-transition: height 0.3s ease-in-out, opacity 0.3s linear;
 		          transition: height 0.3s ease-in-out, opacity 0.3s linear;
 		}
 		
@@ -45,6 +48,36 @@
 			opacity: 1;
 			filter: alpha(opacity=100);
 		}
+		
+		
+		.no2_test {
+			background-color: #dddddd;
+		}
+		
+		.no2_test .expand {
+		  background-color: orange;
+		  display: none;
+		  height: 20px;
+		  opacity: 0.4;
+		  filter: alpha(opacity=40);
+		  
+		  -webkit-transition: height 0.3s ease-in-out, opacity 0.3s linear;
+		     -moz-transition: height 0.3s ease-in-out, opacity 0.3s linear;
+		       -o-transition: height 0.3s ease-in-out, opacity 0.3s linear;
+		          transition: height 0.3s ease-in-out, opacity 0.3s linear;
+		}
+		
+		.no2_test .expand.active {
+			display: block;
+			height: 150px;
+			opacity: 1;
+			filter: alpha(opacity=100);
+		}
+		
+		.no2_test .expand.transition {
+			display: block;
+		}
+		
 		
 		.childtrans {
 		  background-color: orange;
@@ -60,6 +93,7 @@
 			
 		  -webkit-transition: height 0.3s ease-in;
 		     -moz-transition: height 0.3s ease-in;
+		       -o-transition: height 0.3s ease-in;
 		          transition: height 0.3s ease-in;
 		}
 		
@@ -84,6 +118,11 @@
 		<div class="expand"></div>
 	</section>
 	
+	<h2>Show/hide transition</h2>
+	<section class="no2_test test">
+		<div class="expand"></div>
+	</section>
+	
 	<h2>Child transition</h2>
 	<section class="test">
 		<div class="childtrans">
@@ -103,19 +142,39 @@
 	<script src="../jquery.transitions.js"></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function(){
-			jQuery('.expand, .notrans, .childtrans').bind('click', function() {
+//			jQuery('.expand, .notrans, .childtrans')
+//			.bind('click', function() {
+//				var debug = (window.console && console.log);
+//				
+//				var elem = jQuery(this),
+//						flag = elem.data('flag');
+//				
+//				if (!flag) {
+//					if (debug) { console.log('ADD'); }
+//					elem.addTransitionClass('active');
+//				}
+//				else {
+//					if (debug) { console.log('REMOVE'); }
+//					elem.removeTransitionClass('active');
+//				}
+//				
+//				elem.data('flag', !flag);
+//			});
+			
+			jQuery('.test')
+			.bind('click', function() {
 				var debug = (window.console && console.log);
-  		
-				var elem = jQuery(this),
+				
+				var elem = jQuery(this).find('.expand'),
 						flag = elem.data('flag');
 				
 				if (!flag) {
 					if (debug) { console.log('ADD'); }
-					jQuery(this).addTransitionClass('active');
+					elem.addTransitionClass('active');
 				}
 				else {
 					if (debug) { console.log('REMOVE'); }
-					jQuery(this).removeTransitionClass('active');
+					elem.removeTransitionClass('active');
 				}
 				
 				elem.data('flag', !flag);

@@ -1,6 +1,6 @@
 // jquery.transitions.js
 // 
-// 1.6
+// 1.7
 // 
 // Feature detects CSS transitions and provides a means to manage
 // transitions that start or end with un-transitionable properties
@@ -24,10 +24,10 @@
 				left: -9999,
 				width: 100,
 				height: 100,
-				WebkitTransition: 'top 0.001s linear',
-				MozTransition: 'top 0.001s linear',
-				OTransition: 'top 0.001s linear',
-				transition: 'top 0.001s linear'
+				WebkitTransition: 'top 0.01s linear',
+				MozTransition: 'top 0.01s linear',
+				OTransition: 'top 0.01s linear',
+				transition: 'top 0.01s linear'
 			}),
 			transitionClass = 'transition',
 			addOptions = { fallback: makeFallback(true) },
@@ -48,7 +48,7 @@
 				return;
 			}
 			
-			doClass.call(elem, className).addClass(transitionClass);
+			doClass.call(elem, className);
 			
 			transition = (
 				// For IE6, IE7, IE8
@@ -100,7 +100,10 @@
 					}
 				}
 				
-				elem.animate(css, options);
+				elem
+				.animate(css, options)
+				.addClass(transitionClass);
+				
 				doClass.call(elem, className);
 			}
 			else {
@@ -221,27 +224,27 @@
 		return this;
 	};
 	
-	docElem
-	.bind('transitionend webkitTransitionEnd oTransitionEnd', transitionEnd)
-	.ready(function(){
-		// Put the test element in the body
-		testElem.appendTo('body');
-		
-		// Force the browser to reflow.
-		testElem.width();
-		
-		// Apply CSS to trigger a transition
-		testElem.css({ top: -300 });
-		
-		// Set a timeout for the transition test to finish, and if it does not,
-		// get rid of the test element. Opera requires a much greater delay
-		// than the time the transition should take, worryingly.
-		timer = setTimeout(function(){
-			removeTest();
-			
-			// Store flags in jQuery.support
-			jQuery.support.cssTransition = false;
-			jQuery.support.cssTransitionEnd = false;
-		}, 100);
-	});
+//	docElem
+//	.bind('transitionend webkitTransitionEnd oTransitionEnd', transitionEnd)
+//	.ready(function(){
+//		// Put the test element in the body
+//		testElem.appendTo('body');
+//		
+//		// Force the browser to reflow.
+//		testElem.width();
+//		
+//		// Apply CSS to trigger a transition
+//		testElem.css({ top: -300 });
+//		
+//		// Set a timeout for the transition test to finish, and if it does not,
+//		// get rid of the test element. Opera requires a much greater delay
+//		// than the time the transition should take, worryingly.
+//		timer = setTimeout(function(){
+//			removeTest();
+//			
+//			// Store flags in jQuery.support
+//			jQuery.support.cssTransition = false;
+//			jQuery.support.cssTransitionEnd = false;
+//		}, 100);
+//	});
 })(jQuery);
