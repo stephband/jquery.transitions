@@ -224,27 +224,27 @@
 		return this;
 	};
 	
-//	docElem
-//	.bind('transitionend webkitTransitionEnd oTransitionEnd', transitionEnd)
-//	.ready(function(){
-//		// Put the test element in the body
-//		testElem.appendTo('body');
-//		
-//		// Force the browser to reflow.
-//		testElem.width();
-//		
-//		// Apply CSS to trigger a transition
-//		testElem.css({ top: -300 });
-//		
-//		// Set a timeout for the transition test to finish, and if it does not,
-//		// get rid of the test element. Opera requires a much greater delay
-//		// than the time the transition should take, worryingly.
-//		timer = setTimeout(function(){
-//			removeTest();
-//			
-//			// Store flags in jQuery.support
-//			jQuery.support.cssTransition = false;
-//			jQuery.support.cssTransitionEnd = false;
-//		}, 100);
-//	});
+	docElem
+	.bind('transitionend webkitTransitionEnd oTransitionEnd', transitionEnd)
+	.ready(function(){
+		// Put the test element in the body
+		testElem.appendTo('body');
+		
+		// Force the browser to reflow.
+		testElem.width();
+		
+		// Apply CSS to trigger a transition
+		testElem.css({ top: -300 });
+		
+		// Set a timeout for the transition test to finish, and if it does not,
+		// get rid of the test element. Opera requires a much greater delay
+		// than the time the transition should take, worryingly.
+		timer = setTimeout(function(){
+			removeTest();
+			
+			// Store flags in jQuery.support
+			jQuery.support.cssTransition = false;
+			jQuery.support.cssTransitionEnd = false;
+		}, 100);
+	});
 })(jQuery);
