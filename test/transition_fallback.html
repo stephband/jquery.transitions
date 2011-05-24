@@ -27,9 +27,6 @@
 			position: relative;
 		}
 		
-		.no2_test {
-		  
-		}
 		
 		.expand {
 		  background-color: orange;
@@ -50,8 +47,9 @@
 		}
 		
 		
-		.no2_test {
-			background-color: #dddddd;
+		.no2_test p {
+			background: #dddddd;
+			height: 20px;
 		}
 		
 		.no2_test .expand {
@@ -120,6 +118,7 @@
 	
 	<h2>Show/hide transition</h2>
 	<section class="no2_test test">
+		<p>Click me.</p>
 		<div class="expand"></div>
 	</section>
 	
@@ -142,30 +141,11 @@
 	<script src="../jquery.transitions.js"></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function(){
-//			jQuery('.expand, .notrans, .childtrans')
-//			.bind('click', function() {
-//				var debug = (window.console && console.log);
-//				
-//				var elem = jQuery(this),
-//						flag = elem.data('flag');
-//				
-//				if (!flag) {
-//					if (debug) { console.log('ADD'); }
-//					elem.addTransitionClass('active');
-//				}
-//				else {
-//					if (debug) { console.log('REMOVE'); }
-//					elem.removeTransitionClass('active');
-//				}
-//				
-//				elem.data('flag', !flag);
-//			});
-			
 			jQuery('.test')
 			.bind('click', function() {
 				var debug = (window.console && console.log);
 				
-				var elem = jQuery(this).find('.expand'),
+				var elem = jQuery(this).find('.expand, .notrans, .childtrans'),
 						flag = elem.data('flag');
 				
 				if (!flag) {

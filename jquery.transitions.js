@@ -49,13 +49,7 @@
 			}
 			
 			doClass.call(elem, className);
-			
-			transition = (
-				// For IE6, IE7, IE8
-				this.css('transition') ||
-				// For IE9
-				(window.getComputedStyle && getComputedStyle(this[0], null).transition)
-			);
+			transition = this.css('transition') || (window.getComputedStyle && getComputedStyle(this[0], null).transition) ;
 			
 			if (transition) {
 				// IE, even though it doesn't support CSS transitions, at least
@@ -81,6 +75,10 @@
 						callback && callback.apply(this);
 					}
 				};
+
+				// transitionClass must be added before anything is measured, else
+				// IE8 goes marching merrily off into compatibility mode.
+				elem.addClass(transitionClass);
 				
 				// Regex should be looser, to allow incompolete transition definitions...
 				transition.replace(/([a-z\-]+)\s+([^\s]+)\s+([a-z\-]+)/g, function($match, $key, $duration, $easing) {
@@ -100,10 +98,7 @@
 					}
 				}
 				
-				elem
-				.animate(css, options)
-				.addClass(transitionClass);
-				
+				elem.animate(css, options);
 				doClass.call(elem, className);
 			}
 			else {
@@ -164,7 +159,7 @@
 	}
 	
 	function transitionEnd(e){
-		if (debug) { console.log('[jquery.transitions] CSS transition support detected.'); }
+		if (debug) { console.log('[jquery.transitions] Transition feature test: PASS'); }
 		
 		// Get rid of the test element
 		removeTest();
@@ -231,6 +226,8 @@
 			clearTimeout(wait);
 			wait = null;
 			
+			if (debug) { console.log('[jquery.transitions] Running transition feature test.'); }
+			
 			// Put the test element in the body
 			testElem.appendTo('body');
 			
@@ -245,6 +242,8 @@
 			// than the time the transition should take, worryingly.
 			timer = setTimeout(function(){
 				removeTest();
+				
+				if (debug) { console.log('[jquery.transitions] Transition feature test: FAIL'); }
 				
 				// Store flags in jQuery.support
 				jQuery.support.cssTransition = false;
