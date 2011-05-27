@@ -1,6 +1,6 @@
 // jquery.transitions.js
 // 
-// 1.8
+// 1.7
 // 
 // Feature detects CSS transitions and provides a means to manage
 // transitions that start or end with un-transitionable properties
@@ -32,12 +32,6 @@
 			transitionClass = 'transition',
 			addOptions = { fallback: makeFallback(true) },
 			removeOptions = { fallback: makeFallback(false) },
-			autoProperties = {
-				'height': true,
-				'width': true,
-				'margin-left': true,
-				'margin-right': true
-			},
 			timer;
 	
 	function makeFallback(add) {
@@ -129,26 +123,6 @@
 	function addTransitionClass( classNames, options ) {
 		// Add the transition class then force the
 		// browser to reflow by measuring something.
-		
-		this.addClass(classNames);
-		
-		var transition = this.css('transition'),
-		    array, l, match;
-		
-		// Support property: auto;
-		if (transition) {
-			array = transition.split(',');
-			l = array.length;
-			
-			// Look for properties that could have property: auto
-		  while (l--) {
-				match = /^\s*([a-z\-]+)/.exec(array[l]);
-				if (autoProperties[match]) {
-					console.log('We got one!', match);
-				}
-			}
-		}
-		
 		this
 		.addClass( transitionClass )
 		.width();
@@ -205,7 +179,7 @@
 	
 	// Easing functions 'borrowed' from jQuery UI, renamed to meet
 	// the CSS spec. TODO: At some point, we should rewrite these
-	// to exactly match ths CSS spec, which is:
+	// to exactly match ths CSS spec:
 	//
 	// ease: cubic-bezier(0,0,1,1)
 	// ease-in: cubic-bezier(0.25,0.1,0.25,1)
