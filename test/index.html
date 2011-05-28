@@ -77,6 +77,46 @@
 		}
 		
 		
+		.no3_test p {
+			background: #dddddd;
+		}
+		
+		.no3_test .expand {
+		  background-color: orange;
+		  height: 20px;
+		  overflow: hidden;
+		  
+		  -webkit-transition: height 0.3s ease-in-out, opacity 0.3s linear, display 0.3s;
+		     -moz-transition: height 0.3s ease-in-out, opacity 0.3s linear, display 0.3s;
+		       -o-transition: height 0.3s ease-in-out, opacity 0.3s linear, display 0.3s;
+		          transition: height 0.3s ease-in-out, opacity 0.3s linear, display 0.3s;
+		}
+		
+		.no3_test .expand.active {
+			height: auto;
+		}
+		
+		
+		.no4_test p {
+			background: #dddddd;
+		}
+		
+		.no4_test .expand {
+		  background-color: orange;
+		  height: auto;
+		  overflow: hidden;
+		  
+		  -webkit-transition: height 1s ease-in-out, opacity 0.3s linear;
+		     -moz-transition: height 1s ease-in-out, opacity 0.3s linear;
+		       -o-transition: height 1s ease-in-out, opacity 0.3s linear;
+		          transition: height 1s ease-in-out, opacity 0.3s linear;
+		}
+		
+		.no4_test .expand.active {
+			height: 20px;
+		}
+		
+		
 		.childtrans {
 		  background-color: orange;
 		  height: 20px;
@@ -112,10 +152,30 @@
 
 <body>
 	<h2>Transition</h2>
-	<section class="test">
+	<section class="no1_test test">
 		<div class="expand"></div>
 	</section>
+
+	<h2>Transition to auto</h2>
+	<section class="no3_test test">
+		<p>Click me.</p>
+		<div class="expand">
+			<p>The quick brown fox jumps over the lazy dog.</p>
+			<p>The quick brown fox jumps over the lazy dog.</p>
+			<p>The quick brown fox jumps over the lazy dog.</p>
+		</div>
+	</section>
 	
+	<h2>Transition from auto</h2>
+	<section class="no4_test test">
+		<p>Click me.</p>
+		<div class="expand">
+			<p>The quick brown fox jumps over the lazy dog.</p>
+			<p>The quick brown fox jumps over the lazy dog.</p>
+			<p>The quick brown fox jumps over the lazy dog.</p>
+		</div>
+	</section>
+
 	<h2>Show/hide transition</h2>
 	<section class="no2_test test">
 		<p>Click me.</p>
@@ -150,11 +210,19 @@
 				
 				if (!flag) {
 					if (debug) { console.log('ADD'); }
-					elem.addTransitionClass('active');
+					elem.addTransitionClass('active', {
+						callback: function(e) {
+							console.log('Add callback.', elem.data('preTransitionStyle'));
+						}
+					});
 				}
 				else {
 					if (debug) { console.log('REMOVE'); }
-					elem.removeTransitionClass('active');
+					elem.removeTransitionClass('active', {
+						callback: function(e) {
+							console.log('Remove callback.');
+						}
+					});
 				}
 				
 				elem.data('flag', !flag);
