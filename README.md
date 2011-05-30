@@ -5,7 +5,7 @@ These two methods address these problems.</p>
 <h2>New in 1.8 - transitions to and from 'auto'</h2>
 <ul>
   <li>Adds support for transitions to and from 'auto' values, for the CSS properties height, width, margin-left and margin-right.</li>
-  <li>Adds support for multiple transitions of different durations.</li>
+  <li>Adds support for multiple transitions of different durations (not yet in the IE fallback).</li>
 </ul>
 
 <h2>New in 1.6 - IE fallback!</h2>
