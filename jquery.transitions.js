@@ -179,11 +179,12 @@
 		doMethod.call(elem, classNames);
 		
 		// Make array out of transition properties.
-		properties = (elem.css(transitionPropertyStr) || elem.css('MozTransitionProperty')).split(/\s*,\s*/);
 		durations = (elem.css(transitionDurationStr) || elem.css('MozTransitionDuration')).split(/\s*,\s*/);
 		
 		if (durations.length > 1 || parseFloat(durations[0]) > 0) {
-		  if (debug) { console.log('[jquery.transitions]', properties, durations); }
+			properties = (elem.css(transitionPropertyStr) || elem.css('MozTransitionProperty')).split(/\s*,\s*/);
+			
+			if (debug) { console.log('[jquery.transitions]', properties, durations); }
 			
 			l = properties.length;
 			style = elem.data('preTransitionStyle', style);
@@ -234,10 +235,17 @@
 				.bind(jQuery.support.cssTransitionEnd, { obj: elem, callback: options && options.callback, properties: properties }, end);
 			}
 		}
-		else {
+		// Check to see if children have transitions. This is just a
+		// sanity check. It is not foolproof, because nodes could have
+		// transitions defined that are nothing to do with the current
+		// transition.
+		else if (elem.find(':transition').length){
 		  elem
 		  .unbind(jQuery.support.cssTransitionEnd, end)
 		  .bind(jQuery.support.cssTransitionEnd, { obj: elem, callback: options && options.callback }, end);
+		}
+		else {
+			elem.removeClass(transitionClass);
 		}
 	}
 	
@@ -346,6 +354,16 @@
 		
 		options.fallback.call(this, classNames, options.callback);
 		return this;
+	};
+	
+	// Custom selector :transition for finding elements with
+	// a transition defined.
+	
+	jQuery.expr[':'].transition = function(obj){
+		var elem = jQuery(obj),
+				durations = (elem.css(transitionDurationStr) || elem.css('MozTransitionDuration')).split(/\s*,\s*/);
+		
+		return durations && (durations.length > 1 || parseFloat(durations[0]) > 0);
 	};
 	
 	docElem
