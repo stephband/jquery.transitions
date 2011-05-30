@@ -3,7 +3,10 @@ There are some advantages to class based animation, not least of which is the fa
 These two methods address these problems.</p>
 
 <h2>New in 1.8 - transitions to and from 'auto'</h2>
-<p>1.8 adds support for transitions to and from 'auto' values, for the CSS properties height, width, margin-left and margin-right.</p>
+<ul>
+  <li>Adds support for transitions to and from 'auto' values, for the CSS properties height, width, margin-left and margin-right.</li>
+  <li>Adds support for multiple transitions of different durations.</li>
+</ul>
 
 <h2>New in 1.6 - IE fallback!</h2>
 <p>Automatic fallback to jQuery's .animate() in IE6, IE7, IE8 and IE9 allowing you to write transitions in CSS and have them display in these browsers, too. Support is basic for the moment, but works if you stick to a few rules.</p>
