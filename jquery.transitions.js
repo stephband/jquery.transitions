@@ -148,6 +148,8 @@
 		
 		elem.data('preTransitionStyle', false);
 		
+		elem.removeClass(transitionClass);
+		
 		callback && callback.call(e.data.obj);
 	}
 	
@@ -159,6 +161,10 @@
 		    cssStart = {},
 		    cssEnd = {},
 		    style, flag, properties, property, l;
+		
+		elem
+		.addClass(transitionClass)
+		.width();
 		
 		// Measure the values of auto properties. We must do this before
 		// adding the class and testing for transition (unfortunately),
@@ -172,8 +178,11 @@
 		
 		// Make array out of transition properties.
 		properties = (elem.css(transitionPropertyStr) || elem.css('MozTransitionProperty')).split(/\s*,\s*/);
+		durations = (elem.css(transitionDurationStr) || elem.css('MozTransitionDuration')).split(/\s*,\s*/);
 		
-		if (properties) {
+		if (durations.length > 1 || parseFloat(durations[0]) > 0) {
+		  if (debug) { console.log('[jquery.transitions]', properties, durations); }
+			
 			l = properties.length;
 			style = elem.data('preTransitionStyle', style);
 			
@@ -198,11 +207,11 @@
 					// Measure their post-transition value
 					cssEnd[property] = elem.css(property);
 					
-					console.log(property+':', cssStart[property], cssEnd[property]);
+					if (debug) { console.log('[jquery.transitions]', property+' start:', cssStart[property], 'end:', cssEnd[property]); }
 				}
 				
 				if (keywordProperties[property]) {
-					console.log('keyword property', property, (parseFloat(jQuery.trim(elem.css(transitionStr+'Delay')).split(',')[l])) || (parseFloat(jQuery.trim(elem.css(transitionStr+'Duration')).split(',')[l])));
+					//console.log('keyword property', property, (parseFloat(jQuery.trim(elem.css(transitionStr+'Delay')).split(',')[l])) || (parseFloat(jQuery.trim(elem.css(transitionStr+'Duration')).split(',')[l])));
 					// This is ok because we're looping backwards through
 					// the properties array, so our index, l, still goes onto
 					// the 'next' entry.
@@ -251,18 +260,21 @@
 			// The standard, but could also be -moz-.
 			transitionStr = 'transition';
 			transitionPropertyStr = 'transitionProperty';
+			transitionDurationStr = 'transitionDuration';
 			cssTransitionNone = { transition: 'none', MozTransition: 'none' };
 			cssTransitionEmpty = { transition: '', MozTransition: '' };
 		},
 		webkitTransitionEnd: function() {
 			transitionStr = 'WebkitTransition';
 			transitionPropertyStr = 'WebkitTransitionProperty';
+			transitionDurationStr = 'WebkitTransitionDuration';
 			cssTransitionNone = { WebkitTransition: 'none' };
 			cssTransitionEmpty = { WebkitTransition: '' };
 		},
 		oTransitionEnd: function() {
 			transitionStr = 'OTransition';
 			transitionPropertyStr = 'OTransitionProperty';
+			transitionDurationStr = 'OTransitionDuration';
 			cssTransitionNone = { OTransition: 'none' };
 			cssTransitionEmpty = { OTransition: '' };
 		}
