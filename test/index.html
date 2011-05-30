@@ -97,7 +97,7 @@
 		}
 		
 		
-		.no4_test p {
+		.test p {
 			background: #dddddd;
 		}
 		
@@ -138,6 +138,37 @@
 		.childtrans.active .child {
 			height: 150px;
 		}
+		
+		.no6_test .childtrans {
+		  background-color: orange;
+		  height: 20px;
+		}
+		
+		.no6_test .childtrans .child {
+			width: 80%;
+			margin: 0 auto;
+			opacity: 0;
+			display: none;
+			
+			height: 20px;
+			background-color: red;
+			
+		  -webkit-transition: height 0.3s ease-in, opacity 0.3s ease-in;
+		     -moz-transition: height 0.3s ease-in, opacity 0.3s ease-in;
+		       -o-transition: height 0.3s ease-in, opacity 0.3s ease-in;
+		          transition: height 0.3s ease-in, opacity 0.3s ease-in;
+		}
+		
+		.no6_test .childtrans.active .child {
+			height: 150px;
+			opacity: 1;
+			display: block;
+		}
+		
+		.no6_test .childtrans.transition .child {
+		  display: block;
+		}
+		
 		
 		.notrans {
 		  background-color: orange;
@@ -184,6 +215,16 @@
 	
 	<h2>Child transition</h2>
 	<section class="test">
+		<p>Click me.</p>
+		<div class="childtrans">
+			<div class="child">
+			</div>
+		</div>
+	</section>
+	
+	<h2>Child show/hide transition</h2>
+	<section class="no6_test test">
+		<p>Click me.</p>
 		<div class="childtrans">
 			<div class="child">
 			</div>

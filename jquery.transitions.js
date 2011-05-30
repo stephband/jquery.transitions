@@ -129,10 +129,12 @@
 				properties = e.data.properties,
 				property = e.originalEvent.propertyName;
 		
-		properties.splice(properties.indexOf(property), 1);
-		
-		// If properties are still animating, do nothing.
-		if (properties.length) { return; }
+		if (properties) {
+			properties.splice(properties.indexOf(property), 1);
+			
+			// If properties are still animating, do nothing.
+			if (properties.length) { return; }
+		}
 		
 		elem.unbind(jQuery.support.cssTransitionEnd, end);
 		
@@ -233,7 +235,9 @@
 			}
 		}
 		else {
-			options.callback && options.callback.call(elem);
+		  elem
+		  .unbind(jQuery.support.cssTransitionEnd, end)
+		  .bind(jQuery.support.cssTransitionEnd, { obj: elem, callback: options && options.callback }, end);
 		}
 	}
 	
