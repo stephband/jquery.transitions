@@ -149,7 +149,6 @@
 		else { elem.removeAttr('style'); }
 		
 		elem.data('preTransitionStyle', false);
-		
 		elem.removeClass(transitionClass);
 		
 		callback && callback.call(e.data.obj);
@@ -220,20 +219,20 @@
 					// the 'next' entry.
 					properties.splice(l, 1);
 				}
+				
+				if (flag) {
+					// Apply the pre-transition values and force a repaint.
+					undoMethod.call(elem, classNames).css(cssStart).width();
+					
+					// Apply the post-transition values and re-enable transitions.
+					jQuery.extend(cssEnd, cssTransitionEmpty);
+					doMethod.call(elem, classNames).css(cssEnd);
+				}
 			}
 			
-			if (flag) {
-				// Apply the pre-transition values and force a repaint.
-				undoMethod.call(elem, classNames).css(cssStart).width();
-				
-				// Apply the post-transition values and re-enable transitions.
-				jQuery.extend(cssEnd, cssTransitionEmpty);
-				
-				doMethod.call(elem, classNames)
-				.css(cssEnd)
-				.unbind(jQuery.support.cssTransitionEnd, end)
-				.bind(jQuery.support.cssTransitionEnd, { obj: elem, callback: options && options.callback, properties: properties }, end);
-			}
+			elem
+			.unbind(jQuery.support.cssTransitionEnd, end)
+			.bind(jQuery.support.cssTransitionEnd, { obj: elem, callback: options && options.callback, properties: properties }, end);
 		}
 		// Check to see if children have transitions. This is just a
 		// sanity check. It is not foolproof, because nodes could have
